@@ -1,0 +1,41 @@
+{% extends "base.html"%}
+
+
+{% block content %}
+<section class="vh-100" style="background-color: #eee;">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col col-lg-9 col-xl-7">
+        <div class="card rounded-3">
+          <div class="card-body p-4">
+            <h4 class="text-center my-3 pb-3">Tags</h4>
+<a href="{% url 'tasks:tag-create' %}" class="btn btn-success">Create tag <i class="bi bi-plus-circle"></i></a>
+            <table class="table mb-4">
+              <thead>
+                <tr>
+                  <th scope="col">Id</th>
+                  <th scope="col">Tag</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for tag in tag_list %}
+                <tr>
+                  <th scope="row">{{ tag.pk }}</th>
+                  <td><p>{{ tag.tag}}</p>
+                  </td>
+                  <td>
+                    <a href="{% url 'tasks:tag-update' pk=tag.id%}" class="btn btn-info">Update</a>
+                    <a href="{% url 'tasks:tag-delete' pk=tag.id%}" class="btn btn-danger">Delete</a>
+                  </td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
