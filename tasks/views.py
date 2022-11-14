@@ -45,6 +45,11 @@ class TaskList(generic.ListView):
     queryset = model.objects.all()
     template_name = "tasks/task_list.html"
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(TaskList, self).get_context_data(**kwargs)
+        context["form"] = TaskForm(self.request.GET.get("content"))
+        return context
+
 
 class CreateTag(generic.CreateView):
     model = Tag

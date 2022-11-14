@@ -1,4 +1,5 @@
 {% extends "base.html"%}
+{% load crispy_forms_filters %}
 
 
 {% block content %}
@@ -8,7 +9,18 @@
       <div class="col col-lg-9 col-xl-7">
         <div class="card rounded-3">
           <div class="card-body p-4">
-
+            <h4 class="text-center my-3 pb-3">Fast task:</h4>
+            <form action="/tasks/create/" method="post" class="mb-4">
+                <div class="input-group">
+                  <div class="form-outline bg-white">
+                    {% csrf_token %}
+                    {{ form.content|as_crispy_field }}
+                  </div>
+                </div>
+              <button type="submit" class="btn btn-primary">
+                  <i class="bi bi-plus-circle"></i>
+                  </button>
+              </form>
             <h4 class="text-center my-3 pb-3">To Do:</h4>
               <a href="{% url 'tasks:task-create' %}" class="btn btn-success">Create task <i class="bi bi-plus-circle"></i></a>
             <table class="table mb-4">
