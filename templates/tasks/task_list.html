@@ -1,0 +1,83 @@
+{% extends "base.html"%}
+{% load crispy_forms_filters %}
+
+
+{% block content %}
+<section class="vh" style="background-color: #eee;">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col col-lg-9 col-xl-7">
+        <div class="card rounded-3">
+          <div class="card-body p-4">
+            <h4 class="text-center my-3 pb-3">Fast task:</h4>
+            <form action="/tasks/create/" method="post" class="mb-4">
+                <div class="input-group">
+                  <div class="form-outline bg-white">
+                    {% csrf_token %}
+                    {{ form.content|as_crispy_field }}
+                  </div>
+                </div>
+              <button type="submit" class="btn btn-primary">
+                  <i class="bi bi-plus-circle"></i>
+                  </button>
+              </form>
+            <h4 class="text-center my-3 pb-3">To Do:</h4>
+              <a href="{% url 'tasks:task-create' %}" class="btn btn-success">Create task <i class="bi bi-plus-circle"></i></a>
+            <table class="table mb-4">
+              <thead>
+                <tr>
+                  <th scope="col">Id</th>
+                  <th scope="col">Content</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for task in task_list %}
+                <tr>
+                  <th scope="row">{{ task.pk }}</th>
+                  <td><h5>{{ task.content}}</h5>
+                  <p>Created: {{ task.created_at }}</p>
+                  {% if task.deadline %}
+                        <div class="note note-danger mb-0">
+                            <strong>Deadline!:</strong> {{ task.deadline}}
+                        </div>
+                  {% endif %}
+                  <p>Tags:
+                    {% for tag in task.tags.all %}
+                      <span class="badge badge-primary">{{ tag }}</span>
+                    {% endfor %}
+                  </p>
+                  </td>
+                  <td>
+                    {% if task.done %}
+                    <p style="color: forestgreen"> Completed</p>
+                      {% else %}
+                      <p style="color: red"> Unfinished</p>
+                    {% endif %}
+                    </td>
+                  <td>
+
+                    {% if task.done %}
+                      <a href="{% url 'tasks:finish-task' pk=task.id%}" class="btn btn-primary"><i class="bi bi-arrow-counterclockwise"></i></a>
+
+                      {% else %}
+                      <a href="{% url 'tasks:finish-task' pk=task.id%}" class="btn btn-success"><i class="bi bi-check2-square"></i></a>
+
+                    {% endif %}
+                    <a href="{% url 'tasks:task-update' pk=task.id%}" class="btn btn-info"><i class="bi bi-pencil-square"></i></a>
+                  <a href="{% url 'tasks:task-delete' pk=task.id%}" class="btn btn-danger"><i class="bi bi-trash"></i></a>
+                  </td>
+                </tr>
+              {% endfor %}
+
+              </tbody>
+            </table>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
